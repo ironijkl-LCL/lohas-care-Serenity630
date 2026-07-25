@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>630悠然時光：12靈感生活提案卡 - Serenity 630: 12 Principles for Inspirational Living</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "PingFang TC", "Microsoft JhengHei", "Noto Sans CJK TC", sans-serif;
+      background-color: #f6f7f2;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 980px;
+      background-color: #fffef9;
+      border: 3px solid #7a8b6e;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
+    /* 頂部工具列 */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+      border-bottom: 2px dashed #dbe2d4;
+      padding-bottom: 12px;
+    }
+
+    .streak-badge {
+      font-weight: bold;
+      color: #2c3e2e;
+      background-color: #e9edc9;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 14px;
+    }
+
+    .lang-select {
+      padding: 6px 12px;
+      font-size: 14px;
+      border-radius: 6px;
+      border: 1px solid #7a8b6e;
+      background-color: #fff;
+      cursor: pointer;
+    }
+
+    .header-area {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .header {
+      font-size: 26px;
+      font-weight: bold;
+      color: #2c3e2e;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 16px;
+    }
+
+    .btn-draw {
+      background-color: #7a8b6e;
+      color: white;
+      border: none;
+      padding: 10px 22px;
+      font-size: 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .btn-draw:hover {
+      background-color: #5c6b52;
+    }
+
+    /* 網格與卡片 */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .card-container {
+      height: 280px;
+      perspective: 1000px;
+    }
+
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .card-container.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-container.highlight .card-inner {
+      outline: 3px solid #d9534f;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(217, 83, 79, 0.4); }
+      70% { box-shadow: 0 0 0 12px rgba(217, 83, 79, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(217, 83, 79, 0); }
+    }
+
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 10px;
+      border: 2px solid #dbe2d4;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-front {
+      background-color: #ffffff;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .number {
+      font-size: 18px;
+      font-weight: bold;
+      color: #b08d57;
+    }
+
+    .heart {
+      color: #d9534f;
+      font-size: 14px;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #222;
+      border: 1.5px solid #333;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .content {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #444;
+      margin: 8px 0;
+      white-space: pre-line;
+    }
+
+    .action-row {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .btn-audio, .btn-flip {
+      font-size: 12px;
+      padding: 4px 8px;
+      border: 1px solid #7a8b6e;
+      background-color: #f1f4ed;
+      color: #3b5249;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .btn-audio:hover, .btn-flip:hover {
+      background-color: #e2e8d8;
+    }
+
+    /* 背面樣式 */
+    .card-back {
+      background-color: #fcfaf2;
+      transform: rotateY(180deg);
+      border-color: #c8d6b9;
+      justify-content: space-between;
+    }
+
+    .challenge-title {
+      font-size: 15px;
+      font-weight: bold;
+      color: #2c3e2e;
+      margin-top: 6px;
+    }
+
+    .challenge-desc {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #555;
+    }
+
+    .btn-check {
+      background-color: #588157;
+      color: white;
+      border: none;
+      padding: 6px 16px;
+      font-size: 13px;
+      border-radius: 14px;
+      cursor: pointer;
+    }
+
+    .btn-check.completed {
+      background-color: #a3b18a;
+      cursor: default;
+    }
+
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- 頂部工具列 -->
+  <div class="top-bar">
+    <div class="streak-badge" id="streakText">🔥 已連續打卡：0 天</div>
+    <div>
+      <label for="langSelect" style="font-size: 13px; color: #555;">🌐 Language: </label>
+      <select id="langSelect" class="lang-select" onchange="changeLanguage(this.value)">
+        <option value="zh">繁體中文</option>
+        <option value="en">English</option>
+        <option value="ja">日本語</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="header-area">
+    <h1 class="header" id="uiHeader">🌿 《630悠然時光：12靈感生活提案卡》 🌿</h1>
+    <p class="subtitle" id="uiSubtitle">💡 點擊卡片查看「每日微挑戰」，聽語音導賞或點擊按鈕隨機抽取！</p>
+    <button class="btn-draw" id="uiBtnDraw" onclick="drawCard()">🎲 今日靈感抽取</button>
+  </div>
+
+  <div class="grid" id="cardGrid">
+    <!-- 卡片將由 JavaScript 動態渲染 -->
+  </div>
+</div>
+
+<script>
+  // 12 個活法資料庫 (多語言 + 挑戰 + 語音文案)
+  const data = [
+    { id: 1, zh: { word: "慢", verse: "步調放慢懂享受\n心平氣和身體健康", challenge: "今天吃飯或喝茶時，試著把咀嚼與細品的速度放慢一倍。" }, en: { word: "Slow", verse: "Mindful slowness brings peace\nBody and mind in harmony", challenge: "Savor one meal today with zero screen distractions." }, ja: { word: "慢", verse: "ゆったりとした時間を楽しみ\n心身ともに健やかに過ごす", challenge: "今日の食事や茶を、いつもの倍の時間をかけてゆっくり味わってみましょう。" } },
+    { id: 2, zh: { word: "淡", verse: "心淡名利自然輕\n關係淡淡更真誠", challenge: "給一位好久沒聯絡的老朋友發一個簡單問候，不求長談。" }, en: { word: "Light", verse: "Lightness in ambition\nSincerity in relationships", challenge: "Send a gentle greeting to an old friend without expectations." }, ja: { word: "淡", verse: "名利にこだわらず軽やかに\n淡い関係こそ真実が宿る", challenge: "久しく連絡を取っていない友人に、シンプルな挨拶を送ってみましょう。" } },
+    { id: 3, zh: { word: "簡", verse: "生活簡單少負擔\n簡單自在最幸福", challenge: "清理抽屜或桌面上一件不需要的雜物。" }, en: { word: "Pure", verse: "Minimalism brings lightness\nSimplicity holds true joy", challenge: "De-clutter one small corner of your personal space today." }, ja: { word: "簡", verse: "シンプルに暮らして負担を減らし\n気ままな生き方に幸せを感じる", challenge: "引き出しやデスクの上の不用品を一つ整理してみましょう。" } },
+    { id: 4, zh: { word: "靜", verse: "心靜自然少煩惱\n靜心養氣萬事和", challenge: "關掉電視與手機，閉上眼睛深呼吸 3 分鐘。" }, en: { word: "Still", verse: "Inner calmness dissolves worry\nStillness restores energy", challenge: "Take 3 minutes of deep breathing in complete silence." }, ja: { word: "静", verse: "心を静めれば悩みも減り\n落ち着いた態度で調和を生む", challenge: "テレビやスマホを消し、3分間深呼吸して静寂を楽しみましょう。" } },
+    { id: 5, zh: { word: "讓", verse: "將心比心多體諒\n和氣生財家和旺", challenge: "遇到意見不合時，先退一步微笑說一句：「聽你的」。" }, en: { word: "Yield", verse: "Empathy brings harmony\nGrace fosters peace at home", challenge: "Practice active listening today without interrupting others." }, ja: { word: "譲", verse: "相手の立場を思いやり\n和やかな心が家庭に繁栄をもたらす", challenge: "意見が合わない時は一歩譲り、相手の話に耳を傾けてみましょう。" } },
+    { id: 6, zh: { word: "放", verse: "放下過去向前行\n心無罣礙自然安", challenge: "寫下一件最近讓自己耿耿於懷的小事，然後將紙張撕掉。" }, en: { word: "Release", verse: "Release the past and step forward\nAn unburdened heart finds rest", challenge: "Write down one worry on paper and safely discard it." }, ja: { word: "放", verse: "過去を手放して前へ進み\n囚われない心で穏やかに過ごす", challenge: "気になっている悩みを紙に書き出し、それを破って捨ててみましょう。" } },
+    { id: 7, zh: { word: "忘", verse: "忘記過去少煩惱\n忘記年齡開心老", challenge: "做一件你覺得「年輕人才會做」或很久沒嘗試的趣味小事。" }, en: { word: "Unburden", verse: "Forget past troubles\nForget age and age gracefully", challenge: "Forget your chronological age today; do something playful." }, ja: { word: "忘", verse: "過去の悩みを忘れ\n年齢を気にせず楽しく歳を重ねる", challenge: "年齢を気にせず、若々しい気持ちでワクワクする小事に挑戦してみましょう。" } },
+    { id: 8, zh: { word: "惜", verse: "珍惜健康最重要\n珍惜家人常相伴", challenge: "對身邊的家人或朋友真誠地說一句「謝謝你」。" }, en: { word: "Cherish", verse: "Value your wellbeing\nCherish time with loved ones", challenge: "Express genuine thanks to someone close to you today." }, ja: { word: "惜", verse: "健康を第一に慈しみ\n家族との時間を大切にする", challenge: "身近な家族や友人に「ありがとう」と感謝の言葉を伝えてみましょう。" } },
+    { id: 9, zh: { word: "笑", verse: "笑口常開人緣好\n笑對風雨樂道過", challenge: "對著鏡子練習三秒鐘大笑，並給遇到的第一個人一個微笑。" }, en: { word: "Joy", verse: "Laughter opens all doors\nFace life with a smile", challenge: "Smile at yourself in the mirror and share a light moment." }, ja: { word: "笑", verse: "笑顔は良い縁を引き寄せ\n人生の風雨も笑顔で受け止める", challenge: "鏡に向かって笑顔を作り、出会う人に温かい微笑みを送りましょう。" } },
+    { id: 10, zh: { word: "活", verse: "活出自己真本色\n活得快樂最重要", challenge: "花半小時純粹做自己最喜歡的興趣（繪畫、聽歌、看書）。" }, en: { word: "Authentic", verse: "Live as your true self\nPrioritize inner joy", challenge: "Spend 30 minutes on a personal passion or creative hobby." }, ja: { word: "活", verse: "自分らしく生き生きと\n毎日の喜びを大切にする", challenge: "自分が好きな趣味に30分集中して、自分のための時間を過ごしましょう。" } },
+    { id: 11, zh: { word: "學", verse: "活到老時學到老\n保持好奇頭腦好", challenge: "去了解一件以前沒接觸過的新知識或學習一個手機新功能。" }, en: { word: "Learn", verse: "Lifelong learning brings vitality\nCuriosity keeps the mind sharp", challenge: "Learn one new fact, word, or digital feature today." }, ja: { word: "学", verse: "生涯学び続けて頭脳を保ち\n好奇心を持って毎日を楽しむ", challenge: "新しい知識やスマートフォンの新機能を一つ学んでみましょう。" } },
+    { id: 12, zh: { word: "動", verse: "適度運動筋骨軟\n生命不息動常安", challenge: "今天多走 1000 步，或者做 5 分鐘簡單的伸展操。" }, en: { word: "Move", verse: "Moderate movement keeps you flexible\nVitality stems from motion", challenge: "Take a 15-minute mindful walk and stretch your body." }, ja: { word: "動", verse: "適度な運動で身体をほぐし\nアクティブに健康を維持する", challenge: "15分間の散歩やストレッチをして身体を気持ちよく動かしましょう。" } }
+  ];
+
+  let currentLang = 'zh';
+
+  // 渲染頁面
+  function render() {
+    const grid = document.getElementById('cardGrid');
+    grid.innerHTML = '';
+
+    data.forEach((item, index) => {
+      const langData = item[currentLang];
+      const padNum = String(index + 1).padStart(2, '0');
+
+      const cardHTML = `
+        <div class="card-container" id="card-${item.id}">
+          <div class="card-inner">
+            <div class="card-front">
+              <div class="card-header">
+                <span class="number">${padNum}</span>
+                <span class="heart">♥</span>
+                <span class="title">【${langData.word}】</span>
+              </div>
+              <div class="content">${langData.verse}</div>
+              <div class="action-row">
+                <button class="btn-audio" onclick="speakText('${langData.word}. ${langData.verse.replace(/\n/g, ' ')}')">🔊 朗讀</button>
+                <button class="btn-flip" onclick="toggleCard('card-${item.id}')">🔄 翻牌微挑戰</button>
+              </div>
+            </div>
+            <div class="card-back">
+              <div>
+                <div class="challenge-title">🎯 今日微挑戰</div>
+                <div class="challenge-desc" style="margin-top:10px;">${langData.challenge}</div>
+              </div>
+              <div>
+                <button class="btn-check" onclick="checkIn(this)">✅ 完成打卡</button>
+                <br><br>
+                <button class="btn-flip" onclick="toggleCard('card-${item.id}')">🔄 返回正面</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      grid.innerHTML += cardHTML;
+    });
+
+    updateStreakUI();
+  }
+
+  // 切換卡片翻轉
+  function toggleCard(cardId) {
+    document.getElementById(cardId).classList.toggle('flipped');
+  }
+
+  // 無障礙語音導賞 (Web Speech API)
+  function speakText(text) {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      if (currentLang === 'zh') utterance.lang = 'zh-TW';
+      else if (currentLang === 'en') utterance.lang = 'en-US';
+      else if (currentLang === 'ja') utterance.lang = 'ja-JP';
+      window.speechSynthesis.speak(utterance);
+    } else {
+      alert("您的瀏覽器暫時不支援語音朗讀功能。");
+    }
+  }
+
+  // 切換語言
+  function changeLanguage(lang) {
+    currentLang = lang;
+    const headers = {
+      zh: { title: "🌿 《630悠然時光：12靈感生活提案卡》 🌿", sub: "💡 點擊卡片查看「每日微挑戰」，聽語音導賞或點擊按鈕隨機抽取！", btn: "🎲 今日靈感抽取" },
+      en: { title: "🌿 Serenity 630: 12 Principles for Inspirational Living 🌿", sub: "💡 Click cards for daily micro-actions, listen to audio, or draw a random principle!", btn: "🎲 Draw Today's Principle" },
+      ja: { title: "🌿 630 ゆったりタイム：12のライフ提案カード 🌿", sub: "💡 カードをクリックして挑戦内容を確認、音声読み上げも利用可能です！", btn: "🎲 今日の極意を引く" }
+    };
+    document.getElementById('uiHeader').innerText = headers[lang].title;
+    document.getElementById('uiSubtitle').innerText = headers[lang].sub;
+    document.getElementById('uiBtnDraw').innerText = headers[lang].btn;
+    render();
+  }
+
+  // 持久化打卡系統 (LocalStorage)
+  function checkIn(btn) {
+    if (btn.classList.contains('completed')) return;
+    btn.classList.add('completed');
+    btn.innerText = '🎉 已打卡';
+
+    let streak = parseInt(localStorage.getItem('retirement_streak') || '0') + 1;
+    localStorage.setItem('retirement_streak', streak);
+    updateStreakUI();
+  }
+
+  function updateStreakUI() {
+    let streak = localStorage.getItem('retirement_streak') || '0';
+    const streakTexts = {
+      zh: `🔥 已連續打卡：${streak} 天`,
+      en: `🔥 Daily Streak: ${streak} Days`,
+      ja: `🔥 連続記録：${streak} 日`
+    };
+    document.getElementById('streakText').innerText = streakTexts[currentLang];
+  }
+
+  // 隨機抽籤算法
+  function drawCard() {
+    const cards = document.querySelectorAll('.card-container');
+    cards.forEach(card => card.classList.remove('highlight', 'flipped'));
+
+    const randomIndex = Math.floor(Math.random() * cards.length);
+    const selectedCard = cards[randomIndex];
+
+    selectedCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    selectedCard.classList.add('highlight');
+
+    setTimeout(() => {
+      selectedCard.classList.add('flipped');
+    }, 600);
+  }
+
+  // 啟動渲染
+  render();
+</script>
+
+</body>
+</html>
