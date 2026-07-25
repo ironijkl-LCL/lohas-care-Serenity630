@@ -3,7 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>630悠然時光：12靈感生活提案卡 - Serenity 630: 12 Principles for Inspirational Living</title>
+  <title>630悠然時光：12靈感生活提案卡 - Serenity 630</title>
+
+  <!-- PWA 設定 -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta name="theme-color" content="#7a8b6e">
+
   <style>
     * {
       box-sizing: border-box;
@@ -254,7 +261,6 @@
 <body>
 
 <div class="container">
-  <!-- 頂部工具列 -->
   <div class="top-bar">
     <div class="streak-badge" id="streakText">🔥 已連續打卡：0 天</div>
     <div>
@@ -273,13 +279,10 @@
     <button class="btn-draw" id="uiBtnDraw" onclick="drawCard()">🎲 今日靈感抽取</button>
   </div>
 
-  <div class="grid" id="cardGrid">
-    <!-- 卡片將由 JavaScript 動態渲染 -->
-  </div>
+  <div class="grid" id="cardGrid"></div>
 </div>
 
 <script>
-  // 12 個活法資料庫 (多語言 + 挑戰 + 語音文案)
   const data = [
     { id: 1, zh: { word: "慢", verse: "步調放慢懂享受\n心平氣和身體健康", challenge: "今天吃飯或喝茶時，試著把咀嚼與細品的速度放慢一倍。" }, en: { word: "Slow", verse: "Mindful slowness brings peace\nBody and mind in harmony", challenge: "Savor one meal today with zero screen distractions." }, ja: { word: "慢", verse: "ゆったりとした時間を楽しみ\n心身ともに健やかに過ごす", challenge: "今日の食事や茶を、いつもの倍の時間をかけてゆっくり味わってみましょう。" } },
     { id: 2, zh: { word: "淡", verse: "心淡名利自然輕\n關係淡淡更真誠", challenge: "給一位好久沒聯絡的老朋友發一個簡單問候，不求長談。" }, en: { word: "Light", verse: "Lightness in ambition\nSincerity in relationships", challenge: "Send a gentle greeting to an old friend without expectations." }, ja: { word: "淡", verse: "名利にこだわらず軽やかに\n淡い関係こそ真実が宿る", challenge: "久しく連絡を取っていない友人に、シンプルな挨拶を送ってみましょう。" } },
@@ -297,7 +300,6 @@
 
   let currentLang = 'zh';
 
-  // 渲染頁面
   function render() {
     const grid = document.getElementById('cardGrid');
     grid.innerHTML = '';
@@ -341,12 +343,10 @@
     updateStreakUI();
   }
 
-  // 切換卡片翻轉
   function toggleCard(cardId) {
     document.getElementById(cardId).classList.toggle('flipped');
   }
 
-  // 無障礙語音導賞 (Web Speech API)
   function speakText(text) {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
@@ -360,7 +360,6 @@
     }
   }
 
-  // 切換語言
   function changeLanguage(lang) {
     currentLang = lang;
     const headers = {
@@ -374,7 +373,6 @@
     render();
   }
 
-  // 持久化打卡系統 (LocalStorage)
   function checkIn(btn) {
     if (btn.classList.contains('completed')) return;
     btn.classList.add('completed');
@@ -395,7 +393,6 @@
     document.getElementById('streakText').innerText = streakTexts[currentLang];
   }
 
-  // 隨機抽籤算法
   function drawCard() {
     const cards = document.querySelectorAll('.card-container');
     cards.forEach(card => card.classList.remove('highlight', 'flipped'));
@@ -411,8 +408,16 @@
     }, 600);
   }
 
-  // 啟動渲染
   render();
+
+  // 註冊 PWA Service Worker
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(reg => console.log('PWA Service Worker 註冊成功！', reg))
+        .catch(err => console.log('Service Worker 註冊失敗：', err));
+    });
+  }
 </script>
 
 </body>
